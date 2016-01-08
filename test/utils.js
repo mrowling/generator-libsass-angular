@@ -17,9 +17,9 @@ exports.generateFullProject = function (cb) {
       'skip-message': true
     })
     .withPrompts({
-      compass: true,
+      libsass: true,
       bootstrap: true,
-      compassBootstrap: true,
+      libsassBootstrap: true,
       modules: []
     });
 }

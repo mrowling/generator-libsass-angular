@@ -63,10 +63,10 @@ module.exports = function (grunt) {
       jsTest: {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
-      },<% } %><% if (compass) { %>
-      compass: {
+      },<% } %><% if (libsass) { %>
+      sass: {
         files: ['<%%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'postcss:server']
+        tasks: ['sass:server', 'postcss:server']
       },<% } else { %>
       styles: {
         files: ['<%%= yeoman.app %>/styles/{,*/}*.css'],
@@ -251,7 +251,7 @@ module.exports = function (grunt) {
               }
             }<% } %>
           }
-      }<% if (compass) { %>,
+      }<% if (libsass) { %>,
       sass: {
         src: ['<%%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
@@ -316,35 +316,33 @@ module.exports = function (grunt) {
           ext: '.js'
         }]
       }
-    },<% } %><% if (compass) { %>
+    },<% } %><% if (libsass) { %>
 
     // Compiles Sass to CSS and generates necessary files if requested
-    compass: {
-      options: {
-        sassDir: '<%%= yeoman.app %>/styles',
-        cssDir: '.tmp/styles',
-        generatedImagesDir: '.tmp/images/generated',
-        imagesDir: '<%%= yeoman.app %>/images',
-        javascriptsDir: '<%%= yeoman.app %>/scripts',
-        fontsDir: '<%%= yeoman.app %>/styles/fonts',
-        importPath: './bower_components',
-        httpImagesPath: '/images',
-        httpGeneratedImagesPath: '/images/generated',
-        httpFontsPath: '/styles/fonts',
-        relativeAssets: false,
-        assetCacheBuster: false,
-        raw: 'Sass::Script::Number.precision = 10\n'
-      },
-      dist: {
+    sass: {
         options: {
-          generatedImagesDir: '<%%= yeoman.dist %>/images/generated'
+            includePaths: [
+                'bower_components'
+            ]
+        },
+        dist: {
+            files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/styles',
+                src: ['*.scss'],
+                dest: '.tmp/styles',
+                ext: '.css'
+            }]
+        },
+        server: {
+            files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/styles',
+                src: ['*.scss'],
+                dest: '.tmp/styles',
+                ext: '.css'
+            }]
         }
-      },
-      server: {
-        options: {
-          sourcemap: true
-        }
-      }
     },<% } %>
 
     // Renames files for browser caching purposes
@@ -514,12 +512,12 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }<% if (bootstrap) { %>, {
           expand: true,
-          cwd: '<% if (!compassBootstrap) {
+          cwd: '<% if (!libsassBootstrap) {
               %>bower_components/bootstrap/dist<%
             } else {
               %>.<%
             } %>',
-          src: '<% if (compassBootstrap) {
+          src: '<% if (libsassBootstrap) {
               %>bower_components/bootstrap-sass-official/assets/fonts/bootstrap<%
             } else { %>fonts<% }
             %>/*',
@@ -538,20 +536,20 @@ module.exports = function (grunt) {
     concurrent: {
       server: [<% if (coffee) { %>
         'coffee:dist',<% } %><% if (typescript) { %>
-        'typescript:base',<% } %><% if (compass) { %>
-        'compass:server'<% } else { %>
+        'typescript:base',<% } %><% if (libsass) { %>
+        'sass:server'<% } else { %>
         'copy:styles'<% } %>
       ],
       test: [<% if (coffee) { %>
         'coffee',<% } %><% if (typescript) { %>
-        'typescript',<% } %><% if (compass) { %>
-        'compass'<% } else { %>
+        'typescript',<% } %><% if (libsass) { %>
+        'sass'<% } else { %>
         'copy:styles'<% } %>
       ],
       dist: [<% if (coffee) { %>
         'coffee',<% } %><% if (typescript) { %>
-        'typescript',<% } %><% if (compass) { %>
-        'compass:dist',<% } else { %>
+        'typescript',<% } %><% if (libsass) { %>
+        'sass',<% } else { %>
         'copy:styles',<% } %>
         'imagemin',
         'svgmin'

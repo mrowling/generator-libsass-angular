@@ -179,22 +179,22 @@ Generator.prototype.askForStyles = function askForStyles() {
     }
   }, {
     type: 'confirm',
-    name: 'compass',
-    message: 'Would you like to use Sass (with Compass)?',
+    name: 'libsass',
+    message: 'Would you like to use Sass (with libsass)?',
     default: true,
     when: function () {
       return !gulp;
     }
   }], function (props) {
     this.sass = props.sass;
-    this.compass = props.compass;
+    this.libsass = props.libsass;
 
     cb();
   }.bind(this));
 };
 
 Generator.prototype.askForBootstrap = function askForBootstrap() {
-  var compass = this.compass;
+  var libsass = this.libsass;
   var gulp = this.gulp;
   var cb = this.async();
 
@@ -205,15 +205,15 @@ Generator.prototype.askForBootstrap = function askForBootstrap() {
     default: true
   }, {
     type: 'confirm',
-    name: 'compassBootstrap',
+    name: 'libsassBootstrap',
     message: 'Would you like to use the Sass version of Bootstrap?',
     default: true,
     when: function (props) {
-      return !gulp && (props.bootstrap && compass);
+      return !gulp && (props.bootstrap && libsass);
     }
   }], function (props) {
     this.bootstrap = props.bootstrap;
-    this.compassBootstrap = props.compassBootstrap;
+    this.libsassBootstrap = props.libsassBootstrap;
 
     cb();
   }.bind(this));
@@ -323,7 +323,7 @@ Generator.prototype.readIndex = function readIndex() {
 };
 
 Generator.prototype.bootstrapFiles = function bootstrapFiles() {
-  var sass = this.compass || this.sass;
+  var sass = this.libsass || this.sass;
   var cssFile = 'styles/main.' + (sass ? 's' : '') + 'css';
    this.copy(
     path.join('app', cssFile),
