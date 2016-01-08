@@ -215,8 +215,7 @@ Generator.prototype.askForBootstrap = function askForBootstrap() {
     this.bootstrap = props.bootstrap;
     this.libsassBootstrap = props.libsassBootstrap;
 
-    cb();
-  }.bind(this));
+    cb();  }.bind(this));
 };
 
 Generator.prototype.askForModules = function askForModules() {
