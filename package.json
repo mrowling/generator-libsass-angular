@@ -1,6 +1,6 @@
 {
   "name": "generator-libsass-angular",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Libsass support for Yeoman generator for AngularJS originally by the Yeoman Team",
   "keywords": [
     "yeoman-generator",
